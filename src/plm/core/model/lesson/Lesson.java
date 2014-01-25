@@ -55,13 +55,13 @@ public abstract class Lesson {
 					Exercise exo = (Exercise) l;
 					if (exo.getProgLanguages().contains(lang)) {
 						possible++;
-						if (Game.getInstance().studentWork.getPassed(l, lang))
+						if (Game.getInstance().getStudentWork().getPassed(l, lang))
 							passed++;
 					}
 				}
 			}
-			Game.getInstance().studentWork.setPassedExercises(id, lang, passed);
-			Game.getInstance().studentWork.setPossibleExercises(id, lang, possible);
+			Game.getInstance().getStudentWork().setPassedExercises(id, lang, passed);
+			Game.getInstance().getStudentWork().setPossibleExercises(id, lang, possible);
 		}
 	}
 	public String getId() {

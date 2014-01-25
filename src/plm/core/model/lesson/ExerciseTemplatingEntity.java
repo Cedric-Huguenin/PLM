@@ -78,14 +78,14 @@ public abstract class ExerciseTemplatingEntity extends ExerciseTemplated {
 			throw new RuntimeException("ExerciseTemplatingEntities must be templated in Java for now, and use langTemplate afterward. Sorry -- patch warmly welcome if you manage to improve that piece of mess.");
 		}
 		
-		SourceFile javaFile = sourceFiles.get(Game.JAVA).get(0);
+		SourceFile javaFile = getSourceFiles().get(Game.JAVA).get(0);
 		
 		javaFile.setCorrection("$package "+template+" public void run(BatTest t) {\n"+javaFile.getTemplate()+"}\n"+javaFile.getCorrection()+" }");
 		javaFile.setTemplate  ("$package "+template+" public void run(BatTest t) {  "+javaFile.getTemplate()+"}    $body }");
 		//System.out.println("New template: "+sf.getTemplate());
 		
 		if (getProgLanguages().contains(Game.SCALA)) {
-			SourceFile scalaFile = sourceFiles.get(Game.SCALA).get(0);
+			SourceFile scalaFile = getSourceFiles().get(Game.SCALA).get(0);
 			String header = "$package\n"
 					+ "import plm.universe.bat.{BatEntity,BatWorld,BatTest}; \n"
 					+ "import plm.universe.World; \n"

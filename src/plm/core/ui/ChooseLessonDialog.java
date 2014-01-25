@@ -214,8 +214,8 @@ class LessonOverview extends JPanel {
 		String id = path.replaceAll("/", ".").replaceAll("^lessons\\.", "");
 		boolean foundOne = false;
 		for (ProgrammingLanguage lang:Game.programmingLanguages) {
-			int possible = Game.getInstance().studentWork.getPossibleExercises(id, lang);
-			int passed = Game.getInstance().studentWork.getPassedExercises(id, lang);
+			int possible = Game.getInstance().getStudentWork().getPossibleExercises(id, lang);
+			int passed = Game.getInstance().getStudentWork().getPassedExercises(id, lang);
 			if (possible>0) {
 				if (lang == Game.LIGHTBOT) 
 					sb.append(" "+i18n.tr("{0} out of {1} exercises passed.",passed,possible));

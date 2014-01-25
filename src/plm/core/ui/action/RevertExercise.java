@@ -44,7 +44,7 @@ public class RevertExercise extends AbstractGameAction {
 					((SourceFileRevertable) sf).revert();
 			}
 		for (ProgrammingLanguage pl:Game.programmingLanguages) 
-			Game.getInstance().studentWork.setPassed(ex, pl, false);
+			Game.getInstance().getStudentWork().setPassed(ex, pl, false);
 		
 		System.out.println("Exercise reverted");
 	}

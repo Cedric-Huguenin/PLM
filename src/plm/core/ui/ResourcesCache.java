@@ -88,7 +88,7 @@ public class ResourcesCache {
 	public static ImageIcon getStarredIcon(ImageIcon icon, Exercise exo) {
 		String path = exo.getWorld(0).getView().getClass().getCanonicalName();
 		for (ProgrammingLanguage lang : exo.getProgLanguages()) {
-			if (Game.getInstance().studentWork.getPassed(exo, lang))
+			if (Game.getInstance().getStudentWork().getPassed(exo, lang))
 				path += "_"+lang.getLang()+"ok";
 			else 
 				path += "_"+lang.getLang()+"nok";
@@ -100,9 +100,9 @@ public class ResourcesCache {
 				Graphics g = combined.getGraphics();
 				g.drawImage(icon.getImage(), 0, 0, null);
 				
-				ImageIcon star = getIcon("resources/star.png");
-				ImageIcon starNo = getIcon("resources/star_white.png");
-				if (Game.getInstance().studentWork.getPassed(exo, Game.LIGHTBOT))  
+				ImageIcon star = getIcon("img/star.png");
+				ImageIcon starNo = getIcon("img/star_white.png");
+				if (Game.getInstance().getStudentWork().getPassed(exo, Game.LIGHTBOT))  
 					g.drawImage(star.getImage(), 0, 0, null);
 				else 
 					g.drawImage(starNo.getImage(), 0, 0, null);
@@ -120,7 +120,7 @@ public class ResourcesCache {
 					if (lang.equals(Game.LIGHTBOT))
 						continue;
 					
-					if (Game.getInstance().studentWork.getPassed(exo, lang)) {
+					if (Game.getInstance().getStudentWork().getPassed(exo, lang)) {
 						g.drawImage(lang.getIcon().getImage(), positions[curPos].width, positions[curPos].height, null);
 						curPos++;
 					}
