@@ -26,7 +26,7 @@ public class StartExecution extends AbstractGameAction implements HumanLangChang
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ProgrammingLanguage pl = game.getProgrammingLanguage();
+		ProgrammingLanguage pl = Game.getProgrammingLanguage();
 		SourceFile sf = ((Exercise) game.getCurrentLesson().getCurrentExercise()).getSourceFile(pl, 0);
 		game.getStudentWork().setBody(game.getCurrentLesson().getCurrentExercise(), pl, sf.getName(), sf.getBody());
 		if (game.getState().equals(Game.GameState.EXECUTION_STARTED) && game.stepModeEnabled()) {

@@ -10,174 +10,174 @@ import plm.core.model.lesson.Lecture;
 
 public class SessionDB {
 
-	private Map<String, Map<ProgrammingLanguage, Map<String, String>>> body = new HashMap<>();
-	private Map<String, Map<ProgrammingLanguage, Boolean>> passed = new HashMap<>();
+    private Map<String, Map<ProgrammingLanguage, Map<String, String>>> body = new HashMap<>();
+    private Map<String, Map<ProgrammingLanguage, Boolean>> passed = new HashMap<>();
 
-	/* Per lesson summary */
-	private Map<String, Map<ProgrammingLanguage, Integer>> passedExercises = new HashMap<>();
-	private Map<String, Map<ProgrammingLanguage, Integer>> possibleExercises = new HashMap<>();
+    /* Per lesson summary */
+    private Map<String, Map<ProgrammingLanguage, Integer>> passedExercises = new HashMap<>();
+    private Map<String, Map<ProgrammingLanguage, Integer>> possibleExercises = new HashMap<>();
 
-	public void setBody(Lecture exo, ProgrammingLanguage lang, String sourceName, String _body) {
-		if (exo == null) {
-			exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public void setBody(Lecture exo, ProgrammingLanguage lang, String sourceName, String _body) {
+        if (exo == null) {
+            exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Map<String, String>> bodyE = body.get(exo);
-		if (bodyE == null) {
-			bodyE = new HashMap<>();
-			body.put(exo.getId(), bodyE);
-		}
-		Map<String, String> bodyLEP = bodyE.get(lang);
-		if (bodyLEP == null) {
-			bodyLEP = new HashMap<>();
-			bodyE.put(lang, bodyLEP);
-		}
+        Map<ProgrammingLanguage, Map<String, String>> bodyE = body.get(exo);
+        if (bodyE == null) {
+            bodyE = new HashMap<>();
+            body.put(exo.getId(), bodyE);
+        }
+        Map<String, String> bodyLEP = bodyE.get(lang);
+        if (bodyLEP == null) {
+            bodyLEP = new HashMap<>();
+            bodyE.put(lang, bodyLEP);
+        }
 
-		bodyLEP.put(sourceName, _body);
-	}
+        bodyLEP.put(sourceName, _body);
+    }
 
-	public String getBody(Lecture exo, ProgrammingLanguage lang, String sourceName) {
-		if (exo == null) {
-			exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public String getBody(Lecture exo, ProgrammingLanguage lang, String sourceName) {
+        if (exo == null) {
+            exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Map<String, String>> bodyE = body.get(exo.getId());
-		if (bodyE == null) {
-			return null;
-		}
-		Map<String, String> bodyEP = bodyE.get(lang);
-		if (bodyEP == null) {
-			return null;
-		}
-		return bodyEP.get(sourceName);
-	}
+        Map<ProgrammingLanguage, Map<String, String>> bodyE = body.get(exo.getId());
+        if (bodyE == null) {
+            return null;
+        }
+        Map<String, String> bodyEP = bodyE.get(lang);
+        if (bodyEP == null) {
+            return null;
+        }
+        return bodyEP.get(sourceName);
+    }
 
-	public void setPassed(Lecture exo, ProgrammingLanguage lang, boolean _passed) {
-		if (exo == null) {
-			exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public void setPassed(Lecture exo, ProgrammingLanguage lang, boolean _passed) {
+        if (exo == null) {
+            exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		if (getPassed(exo, lang) == _passed) {
-			return;
-		}
+        if (getPassed(exo, lang) == _passed) {
+            return;
+        }
 
-		setPassedExercises(exo.getLesson().getId(), lang, getPassedExercises(exo.getLesson().getId(), lang) + (_passed ? 1 : -1));
+        setPassedExercises(exo.getLesson().getId(), lang, getPassedExercises(exo.getLesson().getId(), lang) + (_passed ? 1 : -1));
 
-		Map<ProgrammingLanguage, Boolean> passedE = passed.get(exo.getId());
-		if (passedE == null) {
-			passedE = new HashMap<ProgrammingLanguage, Boolean>();
-			passed.put(exo.getId(), passedE);
-		}
-		passedE.put(lang, _passed);
-	}
+        Map<ProgrammingLanguage, Boolean> passedE = passed.get(exo.getId());
+        if (passedE == null) {
+            passedE = new HashMap<ProgrammingLanguage, Boolean>();
+            passed.put(exo.getId(), passedE);
+        }
+        passedE.put(lang, _passed);
+    }
 
-	/**
-	 * If the exercise was never attempted (not present in DB), it returns false
-	 */
-	public boolean getPassed(Lecture exo, ProgrammingLanguage lang) {
-		if (exo == null) {
-			exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    /**
+     * If the exercise was never attempted (not present in DB), it returns false
+     */
+    public boolean getPassed(Lecture exo, ProgrammingLanguage lang) {
+        if (exo == null) {
+            exo = Game.getInstance().getCurrentLesson().getCurrentExercise();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Boolean> passedE = passed.get(exo.getId());
-		if (passedE == null) {
-			return false;
-		}
+        Map<ProgrammingLanguage, Boolean> passedE = passed.get(exo.getId());
+        if (passedE == null) {
+            return false;
+        }
 
-		Boolean res = passedE.get(lang);
-		if (res == null) {
-			return false;
-		}
-		return res;
-	}
+        Boolean res = passedE.get(lang);
+        if (res == null) {
+            return false;
+        }
+        return res;
+    }
 
-	public Integer getPossibleExercises(String lesson, ProgrammingLanguage lang) {
-		if (lesson == null) {
-			lesson = Game.getInstance().getCurrentLesson().getId();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public Integer getPossibleExercises(String lesson, ProgrammingLanguage lang) {
+        if (lesson == null) {
+            lesson = Game.getInstance().getCurrentLesson().getId();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Integer> passedL = possibleExercises.get(lesson);
-		if (passedL == null) {
-			return 0;
-		}
+        Map<ProgrammingLanguage, Integer> passedL = possibleExercises.get(lesson);
+        if (passedL == null) {
+            return 0;
+        }
 
-		Integer res = passedL.get(lang);
-		if (res == null) {
-			return 0;
-		}
-		return res;
-	}
+        Integer res = passedL.get(lang);
+        if (res == null) {
+            return 0;
+        }
+        return res;
+    }
 
-	public void setPassedExercises(String lesson, ProgrammingLanguage lang, int val) {
-		if (lesson == null) {
-			lesson = Game.getInstance().getCurrentLesson().getId();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public void setPassedExercises(String lesson, ProgrammingLanguage lang, int val) {
+        if (lesson == null) {
+            lesson = Game.getInstance().getCurrentLesson().getId();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Integer> passedL = passedExercises.get(lesson);
-		if (passedL == null) {
-			passedL = new HashMap<>();
-			passedExercises.put(lesson, passedL);
-		}
+        Map<ProgrammingLanguage, Integer> passedL = passedExercises.get(lesson);
+        if (passedL == null) {
+            passedL = new HashMap<>();
+            passedExercises.put(lesson, passedL);
+        }
 
-		passedL.put(lang, val);
-	}
+        passedL.put(lang, val);
+    }
 
-	public void setPossibleExercises(String lesson, ProgrammingLanguage lang, int val) {
-		if (lesson == null) {
-			lesson = Game.getInstance().getCurrentLesson().getId();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public void setPossibleExercises(String lesson, ProgrammingLanguage lang, int val) {
+        if (lesson == null) {
+            lesson = Game.getInstance().getCurrentLesson().getId();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Integer> possibleL = possibleExercises.get(lesson);
-		if (possibleL == null) {
-			possibleL = new HashMap<>();
-			possibleExercises.put(lesson, possibleL);
-		}
+        Map<ProgrammingLanguage, Integer> possibleL = possibleExercises.get(lesson);
+        if (possibleL == null) {
+            possibleL = new HashMap<>();
+            possibleExercises.put(lesson, possibleL);
+        }
 
-		possibleL.put(lang, val);
-	}
+        possibleL.put(lang, val);
+    }
 
-	public Integer getPassedExercises(String lesson, ProgrammingLanguage lang) {
-		if (lesson == null) {
-			lesson = Game.getInstance().getCurrentLesson().getId();
-		}
-		if (lang == null) {
-			lang = Game.getProgrammingLanguage();
-		}
+    public Integer getPassedExercises(String lesson, ProgrammingLanguage lang) {
+        if (lesson == null) {
+            lesson = Game.getInstance().getCurrentLesson().getId();
+        }
+        if (lang == null) {
+            lang = Game.getProgrammingLanguage();
+        }
 
-		Map<ProgrammingLanguage, Integer> passedL = passedExercises.get(lesson);
-		if (passedL == null) {
-			return 0;
-		}
+        Map<ProgrammingLanguage, Integer> passedL = passedExercises.get(lesson);
+        if (passedL == null) {
+            return 0;
+        }
 
-		Integer res = passedL.get(lang);
-		if (res == null) {
-			return 0;
-		}
-		return res;
-	}
+        Integer res = passedL.get(lang);
+        if (res == null) {
+            return 0;
+        }
+        return res;
+    }
 
-	public Set<String> getLessonsNames() {
-		return possibleExercises.keySet();
-	}
+    public Set<String> getLessonsNames() {
+        return possibleExercises.keySet();
+    }
 }

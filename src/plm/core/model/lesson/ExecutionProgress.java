@@ -20,7 +20,7 @@ public class ExecutionProgress {
 	public static ExecutionProgress newCompilationError(String message) {
 		ExecutionProgress ep = new ExecutionProgress();
 		
-		ep.compilationError = message;
+		ep.setCompilationError(message);
 		ep.passedTests = -1;
 		ep.totalTests = -1;
 		if (ep.compilationError == null)
